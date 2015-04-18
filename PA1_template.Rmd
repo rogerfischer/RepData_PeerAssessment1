@@ -20,8 +20,9 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 ### 1. Load the data
 ```{r, echo=TRUE}
 ## rm(list=ls())
-## setwd("/Users/rogerfischer/datasciencecoursera/repdata/peer1/public")
-activity <- read.csv("../activity.csv", stringsAsFactors = FALSE)
+## setwd("/Users/rogerfischer/datasciencecoursera/repdata/RepData_PeerAssessment1")
+activity <- unzip("activity.zip")
+activity <- read.csv(activity, stringsAsFactors = FALSE)
 str(activity)
 summary(activity)
 ```
