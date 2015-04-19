@@ -1,6 +1,3 @@
-output: html_document
-knit: my_render
-
 # Reproducible Research: Peer Assessment 1   
 
 ## Data   
@@ -12,9 +9,10 @@ The variables included in this dataset are:
 
 - steps: Number of steps taking in a 5-minute interval (missing values are coded as NA)
 
-- date: The date on which the measurement was taken in YYYY-MM-DD format
+- date: The date on which the measurement was taken in YYYY-MM-DD format.
+  There are 61 days.
 
-- interval: Identifier for the 5-minute interval in which measurement was taken
+- interval: Identifier for the 5-minute interval in which measurement was taken. There are 288 intervals.
 
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
@@ -48,6 +46,7 @@ We ignore the missing values in the dataset.
 ```{r, echo=TRUE, results="hide"}
 library(dplyr)
 ```
+
 ```{r, echo=TRUE}
 activity$date <- as.character(activity$date)
 by_day <- group_by(activity, date)
@@ -77,9 +76,19 @@ median_steps
 ### 1. Make a time series plot    
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
+```{r, echo=TRUE}
+by_interval <- group_by(activity, interval)
+steps_by_interval <- summarise(by_interval, steps = mean(steps, na.rm=TRUE))
+plot(steps_by_interval$interval, steps_by_interval$steps, type="l", xlab= "Intervals", ylab= "Steps(average)", col="black" , lwd=2)
+```
+
 ### 2. Maximum number of steps interval    
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
-
+```{r, echo=TRUE}
+max_steps <- max(steps_by_interval$steps)
+max_interval <- subset(steps_by_interval, steps_by_interval$steps == max_steps)
+max_interval 
+```
 
 ## Imputing missing values   
 
