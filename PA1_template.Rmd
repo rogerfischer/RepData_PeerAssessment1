@@ -30,14 +30,44 @@ summary(activity)
 ### 2. Process/transform the data into a format suitable for the analysis
 Date should be of class date, not character
 ```{r, echo=TRUE}
-head(activity$date)
+class(activity$date)
+activity$date <- strptime(activity$date, "%Y-%m-%d")
+class(activity$date)
+order_by_date <- order(activity$date)
+activity <- activity[order_by_date,]
 ```
 
 
-
 ## What is mean total number of steps taken per day?
+We ignore the missing values in the dataset.
 
+### 1. Calculate the total number of steps taken per day
+```{r, echo=TRUE, results="hide"}
+library(dplyr)
+```
+```{r, echo=TRUE}
+activity$date <- as.character(activity$date)
+by_day <- group_by(activity, date)
+steps_by_day <- summarise(by_day, steps = sum(steps))
 
+# View(steps_by_day)
+head(steps_by_day)
+tail(steps_by_day)
+```
+
+### 2. Make a histogram of the total number of steps taken each day
+```{r histogram, echo=TRUE}
+steps_only <- as.matrix(steps_by_day[, 2])
+hist(steps_only)
+```
+
+### 3. Calculate and report the mean and median of the total number of steps taken per day
+```{r, echo=TRUE}
+mean_steps <- apply(steps_by_day[, 2], 2 , mean, na.rm=TRUE)
+mean_steps
+median_steps <- apply(steps_by_day[, 2], 2 , median, na.rm=TRUE)
+median_steps
+```
 
 ## What is the average daily activity pattern?
 
