@@ -1,3 +1,6 @@
+output: html_document
+knit: my_render
+
 # Reproducible Research: Peer Assessment 1   
 
 ## Data   
