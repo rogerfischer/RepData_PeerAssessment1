@@ -1,9 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+# Reproducible Research: Peer Assessment 1   
 
-## Data
+## Data   
 The data is from a personal activity monitoring device such as a Fitbit, Nike Fuelband, or Jawbone Up. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.
 
-### Dataset
+### Dataset   
 Dataset: [Activity monitoring data [Zip file, 52K]](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)
 The variables included in this dataset are:
 
@@ -15,9 +15,9 @@ The variables included in this dataset are:
 
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
-## Loading and preprocessing the data
+## Loading and preprocessing the data      
 
-### 1. Load the data
+### 1. Load the data      
 ```{r, echo=TRUE}
 ## rm(list=ls())
 ## setwd("/Users/rogerfischer/datasciencecoursera/repdata/RepData_PeerAssessment1")
@@ -27,7 +27,7 @@ str(activity)
 summary(activity)
 ```
 
-### 2. Process/transform the data into a format suitable for the analysis
+### 2. Process/transform the data into a format suitable for the analysis     
 Date should be of class date, not character
 ```{r, echo=TRUE}
 class(activity$date)
@@ -38,10 +38,10 @@ activity <- activity[order_by_date,]
 ```
 
 
-## What is mean total number of steps taken per day?
+## What is mean total number of steps taken per day?    
 We ignore the missing values in the dataset.
 
-### 1. Calculate the total number of steps taken per day
+### 1. Calculate the total number of steps taken per day    
 ```{r, echo=TRUE, results="hide"}
 library(dplyr)
 ```
@@ -55,13 +55,13 @@ head(steps_by_day)
 tail(steps_by_day)
 ```
 
-### 2. Make a histogram of the total number of steps taken each day
+### 2. Make a histogram of the total number of steps taken each day   
 ```{r histogram, echo=TRUE}
 steps_only <- as.matrix(steps_by_day[, 2])
 hist(steps_only)
 ```
 
-### 3. Calculate and report the mean and median of the total number of steps taken per day
+### 3. Calculate and report the mean and median of the total number of steps    taken per day
 ```{r, echo=TRUE}
 mean_steps <- apply(steps_by_day[, 2], 2 , mean, na.rm=TRUE)
 mean_steps
@@ -69,12 +69,17 @@ median_steps <- apply(steps_by_day[, 2], 2 , median, na.rm=TRUE)
 median_steps
 ```
 
-## What is the average daily activity pattern?
+## What is the average daily activity pattern?   
+
+### 1. Make a time series plot    
+Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+
+### 2. Maximum number of steps interval    
+Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+
+## Imputing missing values   
 
 
 
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekends?   
