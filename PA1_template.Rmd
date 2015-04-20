@@ -145,7 +145,7 @@ median_steps2
 
 ## Are there differences in activity patterns between weekdays and weekends?    
 
-### 1. Factor variable (Unfinished)    
+### 1. Factor variable (Finished only on Monday, April 20th)   
 Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day. (Unfinished)     
 
 ```{r, echo=TRUE}
@@ -173,12 +173,9 @@ activity$date <- NULL
 by_interval <- group_by(activity, interval)
 steps_by_interval <- summarise(by_interval, steps = mean(steps, na.rm=TRUE))
 
+## Unfinished
 library(ggplot2)
-g <- ggplot()
-g + facet_wrap(~day)
-g + (steps_by_interval, aes(x=steps_by_interval$interval, y=steps_by_interval$steps), facets = .~day)
+g <- ggplot(steps_by_interval, aes(x = interval, y = steps), facets = .~day, color = day )
 g + geom_line()
-g + labs(title = "Panel")
 
-#plot(steps_by_interval$interval, steps_by_interval$steps, type="l", xlab= #"Intervals", ylab= "Steps(average)", col="black" , lwd=2)
 ```

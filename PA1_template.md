@@ -291,7 +291,7 @@ median_steps2
 
 ## Are there differences in activity patterns between weekdays and weekends?    
 
-### 1. Factor variable (Unfinished)    
+### 1. Factor variable (Finished only on Monday, April 20th)   
 Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day. (Unfinished)     
 
 
@@ -299,27 +299,14 @@ Create a new factor variable in the dataset with two levels – “weekday” an
 activity$date <- strptime(activity$date, "%Y-%m-%d")
 activity$day <- weekdays(activity$date)
 
-## Have to do this later
-if (activity$day == "Saturday") {
-    activity$day <- "weekend"
-} else if (activity$day == "Sunday") {
-    activity$day <- "weekend"  
-} else {
-    activity$day <- "weekday"
-}
-```
+activity$day <- gsub("Monday","weekday", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Tuesday","weekday", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Wednesday","weekday", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Thursday","weekday", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Friday","weekday", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Saturday","weekend", activity$day, ignore.case = TRUE)
+activity$day <- gsub("Sunday","weekend", activity$day, ignore.case = TRUE)
 
-```
-## Warning in if (activity$day == "Saturday") {: the condition has length > 1
-## and only the first element will be used
-```
-
-```
-## Warning in if (activity$day == "Sunday") {: the condition has length > 1
-## and only the first element will be used
-```
-
-```r
 activity$day <- as.factor(activity$day)
 class(activity$day)
 ```
@@ -334,8 +321,22 @@ head(activity$day)
 
 ```
 ## [1] weekday weekday weekday weekday weekday weekday
-## Levels: weekday
+## Levels: weekday weekend
 ```
 
 ### 2. Panel (Unfinished)    
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+
+
+```r
+activity$date <- NULL
+by_interval <- group_by(activity, interval)
+steps_by_interval <- summarise(by_interval, steps = mean(steps, na.rm=TRUE))
+
+## Unfinished
+library(ggplot2)
+g <- ggplot(steps_by_interval, aes(x = interval, y = steps), facets = .~day, color = day )
+g + geom_line()
+```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
