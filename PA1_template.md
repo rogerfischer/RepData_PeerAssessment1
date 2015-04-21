@@ -324,19 +324,30 @@ head(activity$day)
 ## Levels: weekday weekend
 ```
 
-### 2. Panel (Unfinished)    
+### 2. Panel (Do not count; Finished only on Tuesday, April, 21)    
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
 
 
 ```r
 activity$date <- NULL
-by_interval <- group_by(activity, interval)
-steps_by_interval <- summarise(by_interval, steps = mean(steps, na.rm=TRUE))
+steps_weekday <- subset(activity, day == "weekday")  
+by_interval_weekday <- group_by(steps_weekday, interval)
+steps_by_interval_weekday <- summarise(by_interval_weekday, steps = mean(steps, na.rm=TRUE), day = "weekday")
 
-## Unfinished
+steps_weekend <- subset(activity, day == "weekend")
+by_interval_weekend <- group_by(steps_weekend, interval)
+steps_by_interval_weekend <- summarise(by_interval_weekend, steps = mean(steps, na.rm=TRUE), day = "weekend")
+
+steps_by_interval2 <- rbind(steps_by_interval_weekday, steps_by_interval_weekend)
+
+## With ggplot - geom with smooth shows the difference between weekday and weekend better
 library(ggplot2)
-g <- ggplot(steps_by_interval, aes(x = interval, y = steps), facets = .~day, color = day )
-g + geom_line()
+qplot(x = interval, y = steps, data = steps_by_interval2, facets = day ~ . ,  color = day, geom	=	c("line", "smooth"))
+```
+
+```
+## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
+## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
 ```
 
 ![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
